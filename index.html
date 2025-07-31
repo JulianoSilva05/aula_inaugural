@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula Inaugural - Proz Educação</title>
+    <style>
+        /* CSS com a nova identidade visual */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+        /* Estilos Gerais */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            color: #333;
+            overflow: hidden;
+        }
+
+        /* Estrutura dos "Slides" */
+        .slide {
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: transform 0.7s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            background-color: #f0f2f5;
+            overflow-y: auto;
+        }
+
+        .slide-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 50px;
+            width: 100%;
+            max-width: 1200px;
+        }
+        
+        .text-content {
+            flex: 1;
+            text-align: left;
+        }
+
+        .image-content {
+            flex: 0 0 40%;
+            text-align: center;
+        }
+        
+        .image-content img {
+            max-width: 100%;
+            max-height: 70vh;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+
+        /* Oculta todos os slides, exceto o ativo */
+        .slide:not(.active) { transform: scale(0.8) translateX(120%); }
+        .slide.previous { transform: scale(0.8) translateX(-120%); }
+        .slide.active { transform: scale(1) translateX(0); }
+        
+        /* ESTILOS DA LOGO */
+        .logo-grande {
+            max-width: 400px; /* Tamanho grande para a logo */
+            height: auto;
+            margin-bottom: 40px;
+        }
+        
+        .logo-pequena {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            width: 150px; /* Tamanho pequeno */
+            height: auto;
+            z-index: 10;
+            /* Sombra para garantir visibilidade em qualquer fundo */
+            filter: drop-shadow(2px 2px 3px rgba(0,0,0,0.4));
+        }
+
+
+        /* Estilos de Conteúdo */
+        h1 {
+            font-size: 4.5rem;
+            margin-bottom: 10px;
+            color: #FFFFFF;
+            text-shadow: 3px 3px 8px rgba(0,0,0,0.5);
+        }
+
+        h2 {
+            font-size: 3rem;
+            color: #7109FF;
+            margin-bottom: 25px;
+            text-align: center;
+            width: 100%;
+        }
+
+        p, li {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            max-width: 800px;
+            margin-bottom: 15px;
+        }
+        
+        ul {
+            list-style-position: inside;
+            text-align: left;
+            max-width: 800px;
+        }
+        
+        strong { color: #FF8000; }
+        
+        .curiosity-box {
+            background-color: #fffbe6;
+            border-left: 5px solid #FF8000;
+            padding: 20px;
+            margin-top: 25px;
+            border-radius: 8px;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+        .curiosity-box strong { color: #FF8000; }
+
+        /* Estilos Específicos dos Slides */
+        #slide1 {
+            background: linear-gradient(45deg, #7109FF, #FF8000);
+            color: white;
+        }
+        #slide1 p { color: white; }
+        
+        #final-slide {
+             background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8)), url('https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+             background-size: cover;
+             background-position: center;
+             color: white;
+        }
+        #final-slide h2, #final-slide p, #final-slide .final-quote { color: white; }
+        .final-quote {
+            font-size: 2rem;
+            font-style: italic;
+            margin-top: 30px;
+            max-width: 900px;
+            color: #FF8000 !important;
+        }
+
+        /* Sessão "O que é vs O que não é" */
+        .comparison-container {
+            display: flex;
+            gap: 40px;
+            width: 100%;
+        }
+        .comparison-column {
+            flex: 1;
+            padding: 20px;
+            border-radius: 15px;
+        }
+        .comparison-column h3 { font-size: 1.8rem; margin-bottom: 15px; }
+        .is { background-color: #e8f5e9; border: 2px solid #4caf50; }
+        .is h3 { color: #2e7d32; }
+        .is-not { background-color: #ffebee; border: 2px solid #f44336; }
+        .is-not h3 { color: #c62828; }
+
+        /* Estilos do Quiz */
+        .quiz-container {
+            background-color: #fff;
+            padding: 30px 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 700px;
+        }
+        .quiz-question { font-size: 1.5rem; font-weight: bold; color: #7109FF; margin-bottom: 25px; }
+        .quiz-options { display: flex; flex-direction: column; gap: 15px; }
+        .option {
+            padding: 15px;
+            background-color: #f0f2f5;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+        }
+        .option:hover { background-color: #FF8000; color: white; border-color: #cc6700; }
+        .option.correct { background-color: #28a745; color: white; border-color: #1e7e34; transform: scale(1.05); }
+        .option.incorrect { background-color: #dc3545; color: white; border-color: #b21f2d; }
+        
+        /* Navegação */
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            z-index: 1000;
+        }
+        .nav-btn {
+            padding: 15px 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            border-radius: 50px;
+            background-color: #7109FF;
+            color: white;
+            box-shadow: 0 4px 15px rgba(113, 9, 255, 0.4);
+            transition: all 0.3s ease;
+        }
+        .nav-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(113, 9, 255, 0.6); }
+        .nav-btn:disabled { background-color: #cccccc; cursor: not-allowed; box-shadow: none; }
+    </style>
+</head>
+<body>
+
+    <main>
+        <section class="slide active" id="slide1">
+            <img src="logo.png" alt="Logo da Proz" class="logo-grande">
+            <h1>Bem-vindos ao Futuro!</h1>
+            <p style="font-size: 1.5rem;">Sua Jornada no Desenvolvimento de Sistemas Começa Agora.</p>
+        </section>
+
+        <section class="slide" id="slide2">
+            <img src="logo.png" alt="Logo da Proz" class="logo-pequena">
+            <div class="slide-content">
+                <div class="text-content">
+                    <h2>O que é essa máquina?</h2>
+                    <p>Pense nela como um <strong>cérebro eletrônico</strong> que recebe, armazena e processa informações para nos ajudar.</p>
+                    <p>É composta por duas partes essenciais:</p>
+                    <ul>
+                        <li><strong>Hardware (A parte física):</strong> É tudo o que você pode tocar! Monitor, Teclado, Mouse e a CPU.</li>
+                        <li><strong>Software (A parte "inteligente"):</strong> São os programas e aplicativos que dão vida ao hardware. Windows, Word, Google Chrome.</li>
+                    </ul>
+                </div>
+                <div class="image-content">
+                    <img src="https://images.pexels.com/photos/1779487/pexels-photo-1779487.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Computador em uma mesa de trabalho">
+                </div>
+            </div>
+        </section>
+        
+        <section class="slide" id="quiz1">
+            <img src="logo.png" alt="Logo da Proz" class="logo-pequena">
+            <div class="quiz-container">
+                <p class="quiz-question">Qual das opções abaixo é um exemplo de SOFTWARE?</p>
+                <div class="quiz-options">
+                    <div class="option" onclick="checkAnswer(this, false)">Teclado</div>
+                    <div class="option" onclick="checkAnswer(this, false)">Monitor</div>
+                    <div class="option" onclick="checkAnswer(this, true)">Navegador Chrome</div>
+                    <div class="option" onclick="checkAnswer(this, false)">CPU</div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="slide" id="slide3">
+            <img src="logo.png" alt="Logo da Proz" class="logo-pequena">
+            <div class="slide-content">
+                <div class="text-content">
+                    <h2>Uma Viagem no Tempo</h2>
+                    <p>Os primeiros computadores, como o <strong>ENIAC (1945)</strong>, eram gigantescos, ocupavam salas inteiras, pesavam 30 toneladas e serviam para cálculos militares complexos.</p>
+                    <p>A programação nasceu da necessidade de "dar ordens" a essas máquinas. Uma das pioneiras foi <strong>Grace Hopper</strong>, que criou as bases para linguagens mais próximas do inglês.</p>
+                    <div class="curiosity-box">
+                        <strong>Curiosidade:</strong> O termo "bug" (inseto) para se referir a uma falha de sistema foi popularizado por Grace Hopper, quando ela encontrou uma <strong>mariposa de verdade</strong> presa nos relés do seu computador, causando um mau funcionamento!
+                    </div>
+                </div>
+                <div class="image-content">
+                    <img src="/eniac.jpg" alt="Computador antigo ENIAC">
+                </div>
+            </div>
+        </section>
+
+        <section class="slide" id="slide4">
+             <img src="logo.png" alt="Logo da Proz" class="logo-pequena">
+             <div class="slide-content">
+                <div class="text-content">
+                    <h2>Programar vs. Desenvolver</h2>
+                    <h3>O que é Programação?</h3>
+                    <p>É a arte de <strong>escrever instruções</strong> (código) que um computador entende e executa. É como ensinar um idioma novo para a máquina, usando linguagens como Python, JavaScript ou C#.</p>
+                    <p><strong>Analogia:</strong> Programar é fabricar os tijolos.</p>
+                    <h3>O que é Desenvolvimento de Sistemas?</h3>
+                    <p>É o processo <strong>completo</strong> de criar uma solução. Envolve entender um problema, planejar, programar (usando os tijolos), testar e entregar o software pronto (a casa construída).</p>
+                    <p><strong>Analogia:</strong> Desenvolver um sistema é projetar e construir a casa inteira.</p>
+                </div>
+                <div class="image-content">
+                    <img src="https://images.pexels.com/photos/546819/pexels-photo-546819.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Código de programação em uma tela">
+                </div>
+            </div>
+        </section>
+
+        <section class="slide" id="slide5">
+            <img src="logo.png" alt="Logo da Proz" class="logo-pequena">
+            <h2>Desvendando Mitos: O que é e o que NÃO é Desenvolvimento de Sistemas</h2>
+            <div class="comparison-container">
+                <div class="comparison-column is">
+                    <h3>✔️ O que É</h3>
+                    <ul>
+                        <li>Resolver problemas reais com tecnologia.</li>
+                        <li>Trabalhar em equipe e colaborar.</li>
+                        <li>Aprender constantemente.</li>
+                        <li>Criar ferramentas que facilitam a vida.</li>
+                        <li>Ser criativo e lógico ao mesmo tempo.</li>
+                    </ul>
+                </div>
+                <div class="comparison-column is-not">
+                    <h3>❌ O que NÃO É</h3>
+                    <ul>
+                        <li>Ser um "hacker" de filmes.</li>
+                        <li>Trabalhar sozinho em um porão escuro.</li>
+                        <li>Apenas "formatar o PC da tia".</li>
+                        <li>Saber consertar qualquer eletrônico.</li>
+                        <li>Apenas digitar códigos sem parar.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="slide" id="quiz2">
+            <img src="logo.png" alt="Logo da Proz" class="logo-pequena">
+            <div class="quiz-container">
+                <p class="quiz-question">De acordo com o que vimos, qual atividade faz parte do Desenvolvimento de Sistemas?</p>
+                <div class="quiz-options">
+                    <div class="option" onclick="checkAnswer(this, false)">Apenas consertar impressoras.</div>
+                    <div class="option" onclick="checkAnswer(this, true)">Planejar, criar e testar um aplicativo de celular.</div>
+                    <div class="option" onclick="checkAnswer(this, false)">Instalar programas piratas.</div>
+                    <div class="option" onclick="checkAnswer(this, false)">Ser um gênio da matemática.</div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="slide" id="slide6">
+            <img src="logo.png" alt="Logo da Proz" class="logo-pequena">
+            <div class="slide-content">
+                <div class="text-content">
+                    <h2>As Ferramentas do Ofício</h2>
+                    <p>Para programar, não usamos o Word. Usamos <strong>Editores de Código</strong> ou <strong>IDEs</strong> (Ambiente de Desenvolvimento Integrado).</p>
+                    <p>Um editor moderno como o <strong>VS Code</strong> é como uma oficina cheia de superpoderes:</p>
+                    <ul>
+                        <li><strong>Syntax Highlighting:</strong> Colore o código para facilitar a leitura.</li>
+                        <li><strong>Autocomplete:</strong> Sugere comandos para você não ter que decorar tudo.</li>
+                        <li><strong>Depuração (Debugging):</strong> Ajuda a encontrar e esmagar os "bugs"!</li>
+                        <li><strong>Extensões:</strong> Permitem adicionar novas ferramentas e customizar seu ambiente.</li>
+                    </ul>
+                </div>
+                <div class="image-content">
+                    <img src="https://images.pexels.com/photos/270348/pexels-photo-270348.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Editor de código VS Code em uma tela de notebook">
+                </div>
+            </div>
+        </section>
+        
+        <section class="slide" id="slide7">
+            <img src="logo.png" alt="Logo da Proz" class="logo-pequena">
+            <div class="slide-content">
+                <div class="text-content">
+                    <h2>Sua Jornada de Aprendizagem</h2>
+                    <p>Estas são algumas das matérias essenciais que vocês aprenderão:</p>
+                    <ul>
+                        <li><strong>Lógica de Programação:</strong> É o "como pensar" antes de escrever o código. <strong>Importância:</strong> É a base de tudo, como a gramática para um escritor.</li>
+                        <li><strong>Banco de Dados:</strong> Onde e como as informações (de usuários, produtos) são guardadas. <strong>Importância:</strong> Sem ele, seu app teria amnésia!</li>
+                        <li><strong>Front-End:</strong> A parte do sistema que o usuário vê e interage (telas, botões, menus). <strong>Importância:</strong> É a "vitrine" do seu projeto.</li>
+                        <li><strong>Back-End:</strong> O "cérebro" do sistema que funciona nos bastidores. <strong>Importância:</strong> É o motor que faz tudo acontecer.</li>
+                    </ul>
+                </div>
+                <div class="image-content">
+                    <img src="https://images.pexels.com/photos/3184339/pexels-photo-3184339.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Equipe de desenvolvimento colaborando em um projeto">
+                </div>
+            </div>
+        </section>
+
+        <section class="slide" id="slide8">
+            <img src="logo.png" alt="Logo da Proz" class="logo-pequena">
+            <div class="slide-content">
+                <div class="text-content">
+                    <h2>O Mercado de Trabalho te Espera!</h2>
+                    <p>A área de TI é uma das que mais crescem e oferecem oportunidades. Ao se formar, você poderá atuar em:</p>
+                    <ul>
+                        <li><strong>Startups:</strong> Ambiente dinâmico e inovador.</li>
+                        <li><strong>Grandes Empresas (Big Techs):</strong> Google, Microsoft, Amazon...</li>
+                        <li><strong>Consultorias:</strong> Trabalhar em projetos para clientes diversos.</li>
+                        <li><strong>Setor Público:</strong> Desenvolver sistemas para o governo.</li>
+                        <li><strong>Freelancer:</strong> Ser seu próprio chefe!</li>
+                    </ul>
+                    <div class="curiosity-box">
+                        <strong>Curiosidade:</strong> A demanda por desenvolvedores é tão alta que, em muitas áreas, <strong>existem mais vagas abertas do que profissionais qualificados</strong> para preenchê-las. É um excelente momento para entrar na área!
+                    </div>
+                </div>
+                <div class="image-content">
+                    <img src="https://images.pexels.com/photos/3183197/pexels-photo-3183197.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Pessoas em uma reunião de trabalho em um escritório moderno">
+                </div>
+            </div>
+        </section>
+
+        <section class="slide" id="final-slide">
+            <img src="logo.png" alt="Logo da Proz" class="logo-pequena">
+            <h2>A Jornada Apenas Começou!</h2>
+            <p>É totalmente normal se sentir sobrecarregado no início. Ninguém nasce programando!</p>
+            <p>O mais importante agora é <strong>ter curiosidade</strong> e <strong>praticar</strong>. Não tenha medo de clicar, de explorar e de errar. É assim que se aprende.</p>
+            <p class="final-quote">“Todo grande desenvolvedor já foi um iniciante que não sabia nem ligar um computador.”</p>
+        </section>
+        
+    </main>
+
+    <div class="navigation">
+        <button class="nav-btn" id="prevBtn" onclick="navigate(-1)">Voltar</button>
+        <button class="nav-btn" id="nextBtn" onclick="navigate(1)">Avançar</button>
+    </div>
+
+    <script>
+        // JAVASCRIPT - A "inteligência" do nosso site
+        const slides = document.querySelectorAll('.slide');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        let currentSlide = 0;
+
+        function updateSlides() {
+            slides.forEach((slide, index) => {
+                slide.classList.remove('active', 'previous');
+                if (index === currentSlide) {
+                    slide.classList.add('active');
+                } else if (index < currentSlide) {
+                    slide.classList.add('previous');
+                }
+            });
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === slides.length - 1;
+        }
+
+        function navigate(direction) {
+            currentSlide += direction;
+            if (currentSlide < 0) currentSlide = 0;
+            if (currentSlide >= slides.length) currentSlide = slides.length - 1;
+            updateSlides();
+        }
+
+        function checkAnswer(optionElement, isCorrect) {
+            const quizContainer = optionElement.closest('.quiz-options');
+            if (quizContainer.classList.contains('answered')) {
+                return;
+            }
+            quizContainer.classList.add('answered');
+            if (isCorrect) {
+                optionElement.classList.add('correct');
+            } else {
+                optionElement.classList.add('incorrect');
+                const correctOption = quizContainer.querySelector('[onclick*="true"]');
+                if (correctOption) {
+                    correctOption.classList.add('correct');
+                }
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', updateSlides);
+    </script>
+
+</body>
+</html>
