@@ -458,6 +458,28 @@
         }
         
         document.addEventListener('DOMContentLoaded', updateSlides);
+
+        // --- INÍCIO: CÓDIGO PARA A CANETA DE APRESENTAÇÃO ---
+
+        // Adiciona um "ouvinte" para o evento de pressionar uma tecla no teclado
+        document.addEventListener('keydown', function(event) {
+            
+            // Verifica qual tecla foi pressionada
+            switch (event.key) {
+                case 'ArrowRight': // Seta para a direita
+                case 'PageDown':   // Tecla Page Down
+                case ' ':          // Tecla de Espaço (bônus!)
+                    navigate(1); // Chama a função para avançar o slide
+                    break;
+
+                case 'ArrowLeft': // Seta para a esquerda
+                case 'PageUp':    // Tecla Page Up
+                    navigate(-1); // Chama a função para voltar o slide
+                    break;
+            }
+        });
+
+        // --- FIM: CÓDIGO PARA A CANETA DE APRESENTAÇÃO 
     </script>
 
 </body>
